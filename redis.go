@@ -13,14 +13,14 @@ import (
 
 // Create a Redis client with the given options and then wait forever until it is alive. Keeps trying and never returns an error.
 func Redis(options *redis.Options) (*redis.Client, error) {
-        client := redis.NewClient(options)
-        for {
-                if _, err := client.Ping().Result(); err != nil {
-			log.Printf("[W] Could to ping Redis at <redis://%s/%d>: %s", options.Addr, options.DB, err)
-                        time.Sleep(5 * time.Second)
-                        continue
-                }
-                return client, nil
-        }
-        return nil, nil
+	client := redis.NewClient(options)
+	for {
+		if _, err := client.Ping().Result(); err != nil {
+			log.Printf("[W] Could not ping Redis at <redis://%s/%d>: %s", options.Addr, options.DB, err)
+			time.Sleep(5 * time.Second)
+			continue
+		}
+		return client, nil
+	}
+	return nil, nil
 }
